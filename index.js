@@ -38,6 +38,7 @@ app.get('/', (req, res) => {
 // Explicit route to '/report/index'
 app.get('/report/all', (req, res) => {
     console.log('Render /report/all');
+    console.log(reports);
     res.render("report/all", {
         reports: reports
     });
@@ -56,18 +57,31 @@ app.get('/report/index', (req, res) => {
     });
 });
 
+app.get('/report/index/:id', (req, res) => {
+    let id = req.params.id;
+    console.log('Render /report/index/:', id);
+
+    let userData = reports[id].userData;
+    let report = reports[id].report;
+    let monthlyExpenses = reports[id].monthlyExpenses;
+    res.render("report/index", {
+        userdata: userData,
+        report: report,
+        monthlyExpenses: monthlyExpenses,
+    });
+});
+
+
 
 // Handle form submissions with a POST request to '/report/create'
 app.post('/report/create', express.urlencoded({ extended: true }), (req, res) => {
     console.log('POST: Form uploaded');
-    console.log(req.body);
     let report = processFinances(req.body);
     let monthlyExpenses = { Insurance: req.body.Insurance, Financing: (req.body.Price - req.body.Downpayment) * req.body.Financing / 100, Other: req.body.Other }
     let userData = { Price: req.body.Price, Downpayment: req.body.Downpayment, totalMonthlyExpenses: monthlyExpenses.Insurance + monthlyExpenses.Financing + monthlyExpenses.Other };
     let savedReport = { id: id, report: report, userData: userData, monthlyExpenses: monthlyExpenses };
     id += 0;
     reports.push(savedReport);
-    console.log("Processed data: ", report);
     res.render("report/index", {
         userdata: userData,
         report: report,
