@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cost Analysis for Cars</title>
+    <link rel="stylesheet" type="text/css" href="/style/style.css" />
+</head>
+
+<body>
+    <h1 class="text-center">Cost Analysis Data</h1>
+
+    <div class="center">
+        <ul>
+            <%if (typeof reports !=="undefined" ){ %>
+                <%for (var report in reports) { %>
+                    <li>
+                        <%=report%>
+                    </li>
+                    <%}%>
+                        <%}%>
+        </ul>
+    </div>
+
+</body>
+
+</html>
