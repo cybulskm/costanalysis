@@ -43,10 +43,12 @@ app.post('/report/create', express.urlencoded({ extended: true }), (req, res) =>
     console.log('POST: Form uploaded');
     console.log(req.body);
     let report = processFinances(req.body);
+    let monthlyExpenses = { Insurance: req.body.Insurance, Financing: (req.body.Price - req.body.Downpayment) * req.body.Financing / 100, Other: req.body.Other }
     console.log("Processed data: ", report);
     res.render("report/create", {
         userdata: req.body,
-        report: report
+        report: report,
+        monthlyExpenses: monthlyExpenses,
     });
 });
 
@@ -74,9 +76,9 @@ function processFinances(entrydata) {
         let monthlyhours = monhtlyexpenses / entrydata.Wage;
         let weeklyhours = monthlyhours / 4;
         let dailyhours = weeklyhours / 7
-        let remainingpayment = (entrydata.Price + entrydata.Downpayment) / entrydata.Wage;
+        let remainingpayment = (entrydata.Price - entrydata.Downpayment) / entrydata.Wage;
         //TODO Change this to a variable rendered client side, depending on if the user wants to include weekends or not
-        var report = { Totalexpenses: totalexpenses, Monhtlyexpenses: monhtlyexpenses, Monthlyhours: monthlyhours, Weeklyhours: weeklyhours, Dailyhours: dailyhours, Remainingpayment: remainingpayment };
+        var report = { Monthly_Hours: monthlyhours, Weekly_Hours: weeklyhours, Daily_Hours: dailyhours, Remaining_Hours: remainingpayment };
         return report;
     }
     return {};

@@ -14,31 +14,73 @@
     <div class="center text-center">
         <h1 class="text-center">Expenes:</h1>
         <%if (typeof userdata !=="undefined" ){ %>
-            <ul>
-
-
-                <%for (var data in userdata){ %>
-                    <li>
-                        <%=data%>
-                            <%=userdata[data]%>
-                    </li>
-                    <%}%>
-            </ul>
+            <table>
+                <tr>
+                    <th></th>
+                    <th>
+                        Total Costs:
+                    </th>
+                    <th>
+                        Monthly Costs:
+                    </th>
+                </tr>
+                <tr>
+                    <td>Price:</td>
+                    <td>
+                        <%=userdata.Price%>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Downpayment:</td>
+                    <td>
+                        <%=userdata.Downpayment%>
+                    </td>
+                    <td></td>
+                </tr>
+                <%if (typeof monthlyExpenses !=="undefined" ){ %>
+                    <%for (var cost in monthlyExpenses){%>
+                        <tr>
+                            <td>
+                                <%=cost%>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                <%=monthlyExpenses[cost]%>
+                            </td>
+                        </tr>
+                        <%}%>
+                            <tr>
+                                <td>Remaining Payment:</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Remaining Monthly Payment:</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <%}%>
+            </table>
             <%}%>
     </div>
     <div class="center text-center">
-        <h1 class="text-center">Report</h1>
+        <h1 class="text-center">Income:</h1>
         <%if (typeof report !=="undefined" ){ %>
-            <ul>
+            <table>
 
-
-                <%for (var prop in report){ %>
-                    <li>
-                        <%=prop%>
-                            <%=report[prop]%>
-                    </li>
+                <%for (var field in report){%>
+                    <tr>
+                        <td>
+                            <%=field%>
+                        </td>
+                        <td>
+                            <%=report[field]%>
+                        </td>
+                    </tr>
                     <%}%>
-            </ul>
+            </table>
             <%}%>
 
     </div>
