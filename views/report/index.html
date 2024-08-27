@@ -10,15 +10,22 @@
 <body>
     <h1 class="text-center">Cost Analysis Data</h1>
 
-    <div class="form-container">
+    <div class="center">
         <form method="post" action="/report/create">
             <h3>Expenses:</h3>
-            <hr />
+            <label for="Price">Price:</label>
+            <input name="Price" type="number" />
+            <br />
             <label for="Downpayment">Downpayment:</label>
             <input name="Downpayment" type="number" />
             <br />
-            <label for="Financing">Financing:</label>
-            <input name="Financing" type="number" />
+            <hr />
+            <h3>Monthly:</h3>
+            <br />
+            <!--TODO: Make this a radio for the user to either input % of original price or flat financing cost-->
+            <label for="Financing">Financing (%):</label>
+            <input name="Financing" type="number" placeholder="8.99" step="0.01" min="0" max="10" />
+
             <br />
             <label for="Insurance">Insurance:</label>
             <input name="Insurance" type="number" />
@@ -27,12 +34,9 @@
             <input name="Other" type="number" />
             <hr />
             <h3>Income:</h3>
-            <hr />
             <label for="Wage">Hourly Wage:</label>
-            <input name="Wage" />
-            <br />
-            <label for="inputhours">Manual Input:</label>
-            <input name="inputhours" type="radio" onclick="manualHours()" />
+            <input name="Wage" type="number" />
+
             <br />
             <!-- Change this to a submit button -->
             <input type="submit" value="Submit" />

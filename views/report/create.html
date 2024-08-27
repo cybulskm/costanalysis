@@ -10,14 +10,32 @@
 
 <body>
     <h1 class="text-center">Cost Analysis Report</h1>
-    <div>
+    <hr />
+    <div class="center text-center">
+        <h1 class="text-center">Expenes:</h1>
+        <%if (typeof userdata !=="undefined" ){ %>
+            <ul>
+
+
+                <%for (var data in userdata){ %>
+                    <li>
+                        <%=data%>
+                            <%=userdata[data]%>
+                    </li>
+                    <%}%>
+            </ul>
+            <%}%>
+    </div>
+    <div class="center text-center">
+        <h1 class="text-center">Report</h1>
         <%if (typeof report !=="undefined" ){ %>
             <ul>
 
 
-                <%for (var value of Object.values(report)){ %>
+                <%for (var prop in report){ %>
                     <li>
-                        <%=value%>
+                        <%=prop%>
+                            <%=report[prop]%>
                     </li>
                     <%}%>
             </ul>
@@ -25,8 +43,8 @@
 
     </div>
     <div>
-        <a>Add Another</a>
-        <a>View List</a>
+        <a href="/index">Add Another</a>
+        <a href="/all">View All Reports</a>
     </div>
 
 </body>

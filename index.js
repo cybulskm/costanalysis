@@ -28,7 +28,6 @@ app.set('view engine', 'html');
 app.get('/', (req, res) => {
     console.log('Redirect to /report/index');
     res.render("report/index", {
-        report: []
     });
 });
 
@@ -36,7 +35,6 @@ app.get('/', (req, res) => {
 app.get('/report/index', (req, res) => {
     console.log('Render /report/index');
     res.render("report/index", {
-        report: []
     });
 });
 
@@ -44,9 +42,11 @@ app.get('/report/index', (req, res) => {
 app.post('/report/create', express.urlencoded({ extended: true }), (req, res) => {
     console.log('POST: Form uploaded');
     console.log(req.body);
-
+    let report = processFinances(req.body);
+    console.log("Processed data: ", report);
     res.render("report/create", {
-        report: req.body
+        userdata: req.body,
+        report: report
     });
 });
 
@@ -55,3 +55,30 @@ app.listen(8080, () => {
     console.log('App listening on port 8080');
     open(`http://localhost:8080`); // Automatically open the URL
 });
+
+
+function processFinances(entrydata) {
+    //Convert everything to ints because javascript is dumb
+    for (var field in entrydata) {
+        if (entrydata[field]) {
+            entrydata[field] = Number(entrydata[field]);
+
+        }
+    }
+    console.log("Entry data:", entrydata);
+
+
+    if (typeof entrydata !== "undefined") {
+        let totalexpenses = entrydata.Other + entrydata.Insurance + ((entrydata.Financing / 100) * entrydata.Price) + entrydata.Price + entrydata.Downpayment;
+        let monhtlyexpenses = totalexpenses - entrydata.Downpayment - entrydata.Price;
+        let monthlyhours = monhtlyexpenses / entrydata.Wage;
+        let weeklyhours = monthlyhours / 4;
+        let dailyhours = weeklyhours / 7
+        let remainingpayment = (entrydata.Price + entrydata.Downpayment) / entrydata.Wage;
+        //TODO Change this to a variable rendered client side, depending on if the user wants to include weekends or not
+        var report = { Totalexpenses: totalexpenses, Monhtlyexpenses: monhtlyexpenses, Monthlyhours: monthlyhours, Weeklyhours: weeklyhours, Dailyhours: dailyhours, Remainingpayment: remainingpayment };
+        return report;
+    }
+    return {};
+
+}
