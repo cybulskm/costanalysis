@@ -14,6 +14,10 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+//List of objects stored in memory
+var reports = [];
+var id = 0;
+
 // Serve static files from the 'public' folder
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -24,19 +28,34 @@ app.set('views', path.join(__dirname, 'views'));
 app.engine('html', (await import('ejs')).renderFile);
 app.set('view engine', 'html');
 
-// Default route that renders 'report/index.html'
+// Default route that renders 'report/create.html'
 app.get('/', (req, res) => {
-    console.log('Redirect to /report/index');
-    res.render("report/index", {
+    console.log('Redirect to /report/create');
+    res.render("report/create", {
     });
 });
 
 // Explicit route to '/report/index'
+app.get('/report/all', (req, res) => {
+    console.log('Render /report/all');
+    res.render("report/all", {
+        reports: reports
+    });
+});
+
+app.get('/report/create', (req, res) => {
+    console.log('Render /report/create');
+    res.render("report/create", {
+
+    });
+});
+
 app.get('/report/index', (req, res) => {
     console.log('Render /report/index');
     res.render("report/index", {
     });
 });
+
 
 // Handle form submissions with a POST request to '/report/create'
 app.post('/report/create', express.urlencoded({ extended: true }), (req, res) => {
@@ -45,9 +64,11 @@ app.post('/report/create', express.urlencoded({ extended: true }), (req, res) =>
     let report = processFinances(req.body);
     let monthlyExpenses = { Insurance: req.body.Insurance, Financing: (req.body.Price - req.body.Downpayment) * req.body.Financing / 100, Other: req.body.Other }
     let userData = { Price: req.body.Price, Downpayment: req.body.Downpayment, totalMonthlyExpenses: monthlyExpenses.Insurance + monthlyExpenses.Financing + monthlyExpenses.Other };
-
+    let savedReport = { id: id, report: report, userData: userData, monthlyExpenses: monthlyExpenses };
+    id += 0;
+    reports.push(savedReport);
     console.log("Processed data: ", report);
-    res.render("report/create", {
+    res.render("report/index", {
         userdata: userData,
         report: report,
         monthlyExpenses: monthlyExpenses,

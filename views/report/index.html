@@ -3,44 +3,115 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Cost Analysis for Cars</title>
+    <title>Cost Analysis Report</title>
     <link rel="stylesheet" type="text/css" href="/style/style.css" />
 </head>
 
 <body>
-    <h1 class="text-center">Cost Analysis Data</h1>
+    <h1 class="text-center">Cost Analysis Report</h1>
+    <div class="align-right">
+        <button onclick="window.print()">Download page</button>
+    </div>
+    <hr />
+    <div class="center text-center">
+        <h1 class="text-center">Expenes:</h1>
+        <%if (typeof userdata !=="undefined" ){ %>
+            <table>
+                <tr>
+                    <th></th>
+                    <th>
+                        Total Costs
+                    </th>
+                    <th>
+                        Monthly Costs
+                    </th>
+                </tr>
+                <tr>
+                    <td>Price:</td>
+                    <td>
+                        <%=userdata.Price%>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Downpayment:</td>
+                    <td>
+                        <%=userdata.Downpayment%>
+                    </td>
+                    <td></td>
+                </tr>
+                <%if (typeof monthlyExpenses !=="undefined" ){ %>
+                    <%for (var cost in monthlyExpenses){%>
+                        <tr>
+                            <td>
+                                <%=cost%>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                <%=monthlyExpenses[cost]%>
+                            </td>
+                        </tr>
+                        <%}%>
 
-    <div class="center">
-        <form method="post" action="/report/create">
-            <h3>Expenses:</h3>
-            <label for="Price">Price:</label>
-            <input name="Price" type="number" />
-            <br />
-            <label for="Downpayment">Downpayment:</label>
-            <input name="Downpayment" type="number" />
-            <br />
-            <hr />
-            <h3>Monthly:</h3>
-            <br />
-            <!--TODO: Make this a radio for the user to either input % of original price or flat financing cost-->
-            <label for="Financing">Financing (%):</label>
-            <input name="Financing" type="number" placeholder="8.99" step="0.01" min="0" max="10" />
+                            <tr>
+                                <td>Remaining Monthly Payment:</td>
+                                <td></td>
+                                <td class="border-top">
+                                    <%=userdata.totalMonthlyExpenses%>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Remaining Payment:</td>
+                                <td class="border-top">
+                                    <%=userdata.Price - userdata.Downpayment%>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <%}%>
+            </table>
+            <%}%>
+    </div>
+    <div class="center text-center">
+        <h1 class="text-center">Income:</h1>
+        <%if (typeof report !=="undefined" ){ %>
+            <table>
+                <tr>
+                    <th colspan="2">Hours required to pay off monthly expenses:</th>
+                </tr>
+                <tr>
+                    <th>Monthly:</th>
+                    <td>
+                        <%=report.monthlyhours%>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Weekly:</th>
+                    <td>
+                        <%=report.weeklyhours%>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Daily:</th>
+                    <td>
+                        <%=report.dailyhours%>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">Hours required to pay off remining principle</th>
 
-            <br />
-            <label for="Insurance">Insurance:</label>
-            <input name="Insurance" type="number" />
-            <br />
-            <label for="Other">Other:</label>
-            <input name="Other" type="number" />
-            <hr />
-            <h3>Income:</h3>
-            <label for="Wage">Hourly Wage:</label>
-            <input name="Wage" type="number" step="0.01" />
-
-            <br />
-            <!-- Change this to a submit button -->
-            <input type="submit" value="Submit" />
-        </form>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <%=report.remaininghours%>
+                    </td>
+                </tr>
+            </table>
+            <%}%>
+                <div>
+                    <a href="report/create">Add Another</a>
+                    <a href="report/all">View All Reports</a>
+                </div>
     </div>
 
 </body>
