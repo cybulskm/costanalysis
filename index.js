@@ -44,9 +44,11 @@ app.post('/report/create', express.urlencoded({ extended: true }), (req, res) =>
     console.log(req.body);
     let report = processFinances(req.body);
     let monthlyExpenses = { Insurance: req.body.Insurance, Financing: (req.body.Price - req.body.Downpayment) * req.body.Financing / 100, Other: req.body.Other }
+    let userData = { Price: req.body.Price, Downpayment: req.body.Downpayment, totalMonthlyExpenses: monthlyExpenses.Insurance + monthlyExpenses.Financing + monthlyExpenses.Other };
+
     console.log("Processed data: ", report);
     res.render("report/create", {
-        userdata: req.body,
+        userdata: userData,
         report: report,
         monthlyExpenses: monthlyExpenses,
     });
@@ -78,7 +80,14 @@ function processFinances(entrydata) {
         let dailyhours = weeklyhours / 7
         let remainingpayment = (entrydata.Price - entrydata.Downpayment) / entrydata.Wage;
         //TODO Change this to a variable rendered client side, depending on if the user wants to include weekends or not
-        var report = { Monthly_Hours: monthlyhours, Weekly_Hours: weeklyhours, Daily_Hours: dailyhours, Remaining_Hours: remainingpayment };
+        var report = { monthlyhours: monthlyhours, weeklyhours: weeklyhours, dailyhours: dailyhours, remaininghours: remainingpayment };
+        //Round everything to 2 decimal places
+        for (var field in report) {
+            if (report[field]) {
+                report[field] = (Math.round(report[field] * 100) / 100).toFixed(2);
+
+            }
+        }
         return report;
     }
     return {};

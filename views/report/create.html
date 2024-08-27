@@ -51,14 +51,19 @@
                             </td>
                         </tr>
                         <%}%>
-                            <tr>
-                                <td>Remaining Payment:</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
+
+                            <tr class="upper-border">
                                 <td>Remaining Monthly Payment:</td>
                                 <td></td>
+                                <td>
+                                    <%=userdata.totalMonthlyExpenses%>
+                                </td>
+                            </tr>
+                            <tr class="upper-border">
+                                <td>Remaining Payment:</td>
+                                <td>
+                                    <%=userdata.Price - userdata.Downpayment%>
+                                </td>
                                 <td></td>
                             </tr>
                             <%}%>
@@ -69,25 +74,44 @@
         <h1 class="text-center">Income:</h1>
         <%if (typeof report !=="undefined" ){ %>
             <table>
+                <tr>
+                    <th colspan="2">Hours required to pay off monthly expenses:</th>
+                </tr>
+                <tr>
+                    <th>Monthly:</th>
+                    <td>
+                        <%=report.monthlyhours%>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Weekly:</th>
+                    <td>
+                        <%=report.weeklyhours%>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Daily:</th>
+                    <td>
+                        <%=report.dailyhours%>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="2">Hours required to pay off remining principle</th>
 
-                <%for (var field in report){%>
-                    <tr>
-                        <td>
-                            <%=field%>
-                        </td>
-                        <td>
-                            <%=report[field]%>
-                        </td>
-                    </tr>
-                    <%}%>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <%=report.remaininghours%>
+                    </td>
+                </tr>
             </table>
             <%}%>
+                <div>
+                    <a href="/index">Add Another</a>
+                    <a href="/all">View All Reports</a>
+                </div>
+    </div>
 
-    </div>
-    <div>
-        <a href="/index">Add Another</a>
-        <a href="/all">View All Reports</a>
-    </div>
 
 </body>
 
