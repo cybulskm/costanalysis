@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cost Analysis for Cars</title>
     <link rel="stylesheet" type="text/css" href="/style/style.css" />
 </head>
@@ -11,15 +13,32 @@
     <h1 class="text-center">Cost Analysis Data</h1>
 
     <div class="center">
-        <ul>
-            <%if (typeof reports !=="undefined" ){ %>
-                <%for (var report in reports) { %>
-                    <li>
-                        <%=report%>
-                    </li>
+        <table>
+            <%if (typeof reports !=="undefined" && reports.length> 0 ){ %>
+                <tr>
+                    <th>Price</th>
+                    <th>Downpayment</th>
+                    <th>Finacing</th>
+                </tr>
+                <%for (var i=0; i < reports.length; i++) { %>
+                    <tr>
+                        <td>
+                            <%=reports[i].userData.Price%>
+                        </td>
+                        <td>
+                            <%=reports[i].userData.Downpayment%>
+                        </td>
+                        <td>
+                            <%=reports[i].monthlyExpenses.Financing%>
+                        </td>
+                        <td>
+                            <a href="/report/index/<%=i%>">View</a>
+                        </td>
+
+                    </tr>
                     <%}%>
                         <%}%>
-        </ul>
+        </table>
     </div>
 
 </body>
