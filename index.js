@@ -85,7 +85,6 @@ function processFinances(entrydata) {
         for (var field in report) {
             if (report[field]) {
                 report[field] = (Math.round(report[field] * 100) / 100).toFixed(2);
-
             }
         }
         return report;

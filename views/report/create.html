@@ -10,6 +10,9 @@
 
 <body>
     <h1 class="text-center">Cost Analysis Report</h1>
+    <div class="align-right">
+        <button onclick="window.print()">Download page</button>
+    </div>
     <hr />
     <div class="center text-center">
         <h1 class="text-center">Expenes:</h1>
@@ -52,14 +55,14 @@
                         </tr>
                         <%}%>
 
-                            <tr class="upper-border">
+                            <tr class="border-top">
                                 <td>Remaining Monthly Payment:</td>
                                 <td></td>
                                 <td>
                                     <%=userdata.totalMonthlyExpenses%>
                                 </td>
                             </tr>
-                            <tr class="upper-border">
+                            <tr class="border-top">
                                 <td>Remaining Payment:</td>
                                 <td>
                                     <%=userdata.Price - userdata.Downpayment%>

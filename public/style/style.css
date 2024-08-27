@@ -8,18 +8,24 @@ body {
     font-size: 20px;
 }
 
-.text-center {
-    text-align: center;
-}
 
 form {
     border: 2px solid black;
 }
 
 form input {
+    font-family: 'Courier New', Courier, monospace;
     margin: 15px;
     padding: 15px;
     font-size: 20px;
+}
+
+table td th {
+    padding: 10px;
+}
+
+.border-top {
+    border-top: black 2px solid;
 }
 
 .center {
@@ -28,6 +34,11 @@ form input {
     margin-right: auto
 }
 
-table td th {
-    padding: 10px;
+.text-center {
+    text-align: center;
+}
+
+.align-right {
+    align-self: right;
+    right: 10%;
 }
