@@ -3,47 +3,55 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Create Report</title>
-    <link rel="stylesheet" type="text/css" href="/style/style.css" />
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cost Analysis for Cars</title>
+    <link rel="stylesheet" type="text/css" href="/style/style.css">
 </head>
 
 <body>
-    <h1 class="text-center">Cost Analysis Data</h1>
+    <div class="container">
+        <h1 class="text-center">Cost Analysis</h1>
+        <form method="post" action="/report/create" class="center">
+            <div class="section">
+                <h3>Principal:</h3>
+                <div class="form-group">
+                    <label for="Price">Price:</label>
+                    <input name="Price" type="number" />
+                </div>
+                <div class="form-group">
+                    <label for="Downpayment">Downpayment:</label>
+                    <input name="Downpayment" type="number" />
+                </div>
+                <h3>Monthly:</h3>
+                <hr />
+                <div class="form-group">
+                    <label for="Finacing">Financing (%):</label>
+                    <input name="Financing" type="number" placeholder="8.99" step="0.01" />
+                </div>
+                <div class="form-group">
+                    <label for="Insurance">Insurance:</label>
+                    <input name="Insurance" type="number" />
+                </div>
+                <div class="form-group">
+                    <label for="Other">Other:</label>
+                    <input name="Other" type="number" />
+                </div>
+            </div>
 
-    <div class="center">
-        <form method="post" action="/report/create">
-            <h3>Expenses:</h3>
-            <label for="Price">Price:</label>
-            <input name="Price" type="number" />
-            <br />
-            <label for="Downpayment">Downpayment:</label>
-            <input name="Downpayment" type="number" />
-            <br />
-            <hr />
-            <h3>Monthly:</h3>
-            <br />
-            <!--TODO: Make this a radio for the user to either input % of original price or flat financing cost-->
-            <label for="Financing">Financing (%):</label>
-            <input name="Financing" type="number" placeholder="8.99" step="0.01" min="0" max="10" />
+            <div class="section">
+                <h3>Income:</h3>
+                <hr />
+                <div class="form-group">
+                    <label for="Wage">Hourly Wage:</label>
+                    <input name="Wage" type="number" />
+                </div>
+            </div>
 
-            <br />
-            <label for="Insurance">Insurance:</label>
-            <input name="Insurance" type="number" />
-            <br />
-            <label for="Other">Other:</label>
-            <input name="Other" type="number" />
-            <hr />
-            <h3>Income:</h3>
-            <label for="Wage">Hourly Wage:</label>
-            <input name="Wage" type="number" step="0.01" />
-
-            <br />
-            <!-- Change this to a submit button -->
-            <input type="submit" value="Submit" />
+            <div class="form-group">
+                <input type="submit" value="Submit" class="submit-btn" />
+            </div>
         </form>
     </div>
-
 </body>
 
 </html>

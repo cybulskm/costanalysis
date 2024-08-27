@@ -3,115 +3,116 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cost Analysis Report</title>
     <link rel="stylesheet" type="text/css" href="/style/style.css" />
 </head>
 
 <body>
-    <h1 class="text-center">Cost Analysis Report</h1>
-    <div class="align-right">
-        <button onclick="window.print()">Download page</button>
-    </div>
-    <hr />
-    <div class="center text-center">
-        <h1 class="text-center">Expenes:</h1>
-        <%if (typeof userdata !=="undefined" ){ %>
-            <table>
-                <tr>
-                    <th></th>
-                    <th>
-                        Total Costs
-                    </th>
-                    <th>
-                        Monthly Costs
-                    </th>
-                </tr>
-                <tr>
-                    <td>Price:</td>
-                    <td>
-                        <%=userdata.Price%>
-                    </td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Downpayment:</td>
-                    <td>
-                        <%=userdata.Downpayment%>
-                    </td>
-                    <td></td>
-                </tr>
-                <%if (typeof monthlyExpenses !=="undefined" ){ %>
-                    <%for (var cost in monthlyExpenses){%>
-                        <tr>
-                            <td>
-                                <%=cost%>
-                            </td>
-                            <td>
-                            </td>
-                            <td>
-                                <%=monthlyExpenses[cost]%>
-                            </td>
-                        </tr>
-                        <%}%>
+    <div class="container">
+        <h1 class="text-center">Cost Analysis Report</h1>
 
+        <div class="align-right">
+            <button onclick="window.print()" class="download-btn">Download Page</button>
+        </div>
+
+        <hr />
+
+        <div class="center text-center">
+            <h2 class="text-center">Expenses:</h2>
+            <% if (typeof userdata !=="undefined" ) { %>
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>Total Costs</th>
+                        <th>Monthly Costs</th>
+                    </tr>
+                    <tr>
+                        <td>Price:</td>
+                        <td>
+                            <%= userdata.Price %>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Downpayment:</td>
+                        <td>
+                            <%= userdata.Downpayment %>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <% if (typeof monthlyExpenses !=="undefined" ) { %>
+                        <% for (var cost in monthlyExpenses) { %>
                             <tr>
-                                <td>Remaining Monthly Payment:</td>
-                                <td></td>
-                                <td class="border-top">
-                                    <%=userdata.totalMonthlyExpenses%>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Remaining Payment:</td>
-                                <td class="border-top">
-                                    <%=userdata.Price - userdata.Downpayment%>
+                                <td>
+                                    <%= cost %>
                                 </td>
                                 <td></td>
+                                <td>
+                                    <%= monthlyExpenses[cost] %>
+                                </td>
                             </tr>
-                            <%}%>
-            </table>
-            <%}%>
-    </div>
-    <div class="center text-center">
-        <h1 class="text-center">Income:</h1>
-        <%if (typeof report !=="undefined" ){ %>
-            <table>
-                <tr>
-                    <th colspan="2">Hours required to pay off monthly expenses:</th>
-                </tr>
-                <tr>
-                    <th>Monthly:</th>
-                    <td>
-                        <%=report.monthlyhours%>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Weekly:</th>
-                    <td>
-                        <%=report.weeklyhours%>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Daily:</th>
-                    <td>
-                        <%=report.dailyhours%>
-                    </td>
-                </tr>
-                <tr>
-                    <th colspan="2">Hours required to pay off remining principle</th>
+                            <% } %>
+                                <tr>
+                                    <td>Remaining Monthly Payment:</td>
+                                    <td></td>
+                                    <td class="border-top">
+                                        <%= userdata.totalMonthlyExpenses %>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Remaining Payment:</td>
+                                    <td class="border-top">
+                                        <%= userdata.Price - userdata.Downpayment %>
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                <% } %>
+                </table>
+                <% } %>
+        </div>
 
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <%=report.remaininghours%>
-                    </td>
-                </tr>
-            </table>
-            <%}%>
-                <div>
-                    <a href="report/create">Add Another</a>
-                    <a href="report/all">View All Reports</a>
-                </div>
+        <div class="center text-center">
+            <h2 class="text-center">Income:</h2>
+            <% if (typeof report !=="undefined" ) { %>
+                <table>
+                    <tr>
+                        <th colspan="2">Hours Required to Pay Off Monthly Expenses:</th>
+                    </tr>
+                    <tr>
+                        <th>Monthly:</th>
+                        <td>
+                            <%= report.monthlyhours %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Weekly:</th>
+                        <td>
+                            <%= report.weeklyhours %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Daily:</th>
+                        <td>
+                            <%= report.dailyhours %>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">Hours Required to Pay Off Remaining Principle:</th>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <%= report.remaininghours %>
+                        </td>
+                    </tr>
+                </table>
+                <% } %>
+
+        </div>
+        <div class="navigation-links">
+            <a href="/report/create" class="nav-link">Add Another</a>
+            <a href="/report/all" class="nav-link">View All Reports</a>
+        </div>
     </div>
 
 </body>
