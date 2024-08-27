@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cost Analysis for Cars</title>
+    <link rel="stylesheet" type="text/css" href="/style/style.css" />
+</head>
+
+<body>
+    <h1 class="text-center">Cost Analysis Data</h1>
+
+    <div class="form-container">
+        <form method="post" action="/report/create">
+            <h3>Expenses:</h3>
+            <hr />
+            <label for="Downpayment">Downpayment:</label>
+            <input name="Downpayment" type="number" />
+            <br />
+            <label for="Financing">Financing:</label>
+            <input name="Financing" type="number" />
+            <br />
+            <label for="Insurance">Insurance:</label>
+            <input name="Insurance" type="number" />
+            <br />
+            <label for="Other">Other:</label>
+            <input name="Other" type="number" />
+            <hr />
+            <h3>Income:</h3>
+            <hr />
+            <label for="Wage">Hourly Wage:</label>
+            <input name="Wage" />
+            <br />
+            <label for="inputhours">Manual Input:</label>
+            <input name="inputhours" type="radio" onclick="manualHours()" />
+            <br />
+            <!-- Change this to a submit button -->
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+
+</body>
+
+</html>

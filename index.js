@@ -1,26 +1,57 @@
-var http = require("http");
-var fs = require("fs");
-const path = require("path");
-const express = require("express");
+import http from 'http';
+import fs from 'fs';
+import path from 'path';
+import express from 'express';
+import { fileURLToPath } from 'url';
+import { error } from 'console';
+
+// Import the 'open' module dynamically
+const { default: open } = await import('open');
+
 const app = express();
-const { error } = require("console");
 
-// Require static assets from public folder
-app.use(express.static(path.join(__dirname, "public")));
+// Get the directory name of the current module
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// Set 'views' directory for any views
-// being rendered res.render()
-app.set("views", path.join(__dirname, "views"));
+// Serve static files from the 'public' folder
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Set view engine as EJS
-app.engine("html", require("ejs").renderFile);
-app.set("view engine", "html");
+// Set the 'views' directory for any views being rendered via res.render()
+app.set('views', path.join(__dirname, 'views'));
 
-app.get("/", (req, res) => {
-    console.log("Redirect to index");
-    res.sendFile("/public/index.html", { root: __dirname });
+// Set the view engine to render HTML files using EJS
+app.engine('html', (await import('ejs')).renderFile);
+app.set('view engine', 'html');
+
+// Default route that renders 'report/index.html'
+app.get('/', (req, res) => {
+    console.log('Redirect to /report/index');
+    res.render("report/index", {
+        report: []
+    });
 });
 
+// Explicit route to '/report/index'
+app.get('/report/index', (req, res) => {
+    console.log('Render /report/index');
+    res.render("report/index", {
+        report: []
+    });
+});
 
-app.listen(8080);
-console.log("App listening on port 8080");
+// Handle form submissions with a POST request to '/report/create'
+app.post('/report/create', express.urlencoded({ extended: true }), (req, res) => {
+    console.log('POST: Form uploaded');
+    console.log(req.body);
+
+    res.render("report/create", {
+        report: req.body
+    });
+});
+
+// Start the server and open the default browser to the specified URL
+app.listen(8080, () => {
+    console.log('App listening on port 8080');
+    open(`http://localhost:8080`); // Automatically open the URL
+});

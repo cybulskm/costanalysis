@@ -1,0 +1,28 @@
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 20px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+form {
+    border: 2px solid black;
+}
+
+form input {
+    margin: 15px;
+    padding: 15px;
+}
+
+.form-container {
+    max-width: fit-content;
+    margin-left: auto;
+    margin-right: auto
+}

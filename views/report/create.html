@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cost Report</title>
+    <link rel="stylesheet" type="text/css" href="/style/style.css" />
+
+</head>
+
+<body>
+    <h1 class="text-center">Cost Analysis Report</h1>
+    <div>
+        <%if (typeof report !=="undefined" ){ %>
+            <ul>
+
+
+                <%for (var value of Object.values(report)){ %>
+                    <li>
+                        <%=value%>
+                    </li>
+                    <%}%>
+            </ul>
+            <%}%>
+
+    </div>
+    <div>
+        <a>Add Another</a>
+        <a>View List</a>
+    </div>
+
+</body>
+
+</html>
