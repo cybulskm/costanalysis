@@ -3,7 +3,6 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cost Analysis for Cars</title>
     <link rel="stylesheet" type="text/css" href="/style/style.css" />
@@ -12,33 +11,41 @@
 <body>
     <h1 class="text-center">Cost Analysis Data</h1>
 
-    <div class="center">
-        <table>
-            <%if (typeof reports !=="undefined" && reports.length> 0 ){ %>
-                <tr>
-                    <th>Price</th>
-                    <th>Downpayment</th>
-                    <th>Finacing</th>
-                </tr>
-                <%for (var i=0; i < reports.length; i++) { %>
+    <div class="center container">
+        <% if (typeof reports !=="undefined" && reports.length> 0) { %>
+            <table>
+                <thead>
                     <tr>
-                        <td>
-                            <%=reports[i].userData.Price%>
-                        </td>
-                        <td>
-                            <%=reports[i].userData.Downpayment%>
-                        </td>
-                        <td>
-                            <%=reports[i].monthlyExpenses.Financing%>
-                        </td>
-                        <td>
-                            <a href="/report/index/<%=i%>">View</a>
-                        </td>
-
+                        <th>Price</th>
+                        <th>Downpayment</th>
+                        <th>Financing</th>
+                        <th>Link</th>
                     </tr>
-                    <%}%>
-                        <%}%>
-        </table>
+                </thead>
+                <tbody>
+                    <% for (var i=0; i < reports.length; i++) { %>
+                        <tr>
+                            <td>
+                                <%= reports[i].userData.Price %>
+                            </td>
+                            <td>
+                                <%= reports[i].userData.Downpayment %>
+                            </td>
+                            <td>
+                                <%= reports[i].monthlyExpenses.Financing %>
+                            </td>
+                            <td><a href="/report/index/<%= i %>" class="btn btn-view">View</a></td>
+                        </tr>
+                        <% } %>
+                </tbody>
+            </table>
+            <% } else { %>
+                <p class="text-center">No reports available. <a href="/report/create">Create a new report</a></p>
+                <% } %>
+
+    </div>
+    <div class="navigation-links ">
+        <a href="/report/create" class="nav-link">Add Another</a>
     </div>
 
 </body>

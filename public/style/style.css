@@ -40,8 +40,7 @@ form {
 }
 
 /* Inputs styling */
-form input[type="number"],
-form input[type="radio"] {
+form input[type="number"] {
     padding: 10px;
     font-size: 20px;
     width: 100%;
@@ -49,6 +48,16 @@ form input[type="radio"] {
     border: 1px solid #ccc;
     border-radius: 5px;
     margin: 10px;
+}
+
+.checkbox-box {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+form input[type="checkbox"] {
+    flex: none;
 }
 
 /* Button styling */
