@@ -3,127 +3,114 @@ import fs from 'fs';
 import path from 'path';
 import express from 'express';
 import { fileURLToPath } from 'url';
-import { error } from 'console';
 
-// Import the 'open' module dynamically
+// Dynamically import 'open' module
 const { default: open } = await import('open');
 
+// Initialize Express app
 const app = express();
 
 // Get the directory name of the current module
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-//List of objects stored in memory
-var reports = [];
-var id = 0;
+// In-memory storage for reports
+let reports = [];
+let id = 0;
 
 // Serve static files from the 'public' folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Set the 'views' directory for any views being rendered via res.render()
+// Set the 'views' directory and configure EJS as the view engine
 app.set('views', path.join(__dirname, 'views'));
-
-// Set the view engine to render HTML files using EJS
 app.engine('html', (await import('ejs')).renderFile);
 app.set('view engine', 'html');
 
-// Default route that renders 'report/create.html'
+// Default route to render 'report/create.html'
 app.get('/', (req, res) => {
     console.log('Redirect to /report/create');
-    res.render("report/create", {
-    });
+    res.render('report/create');
 });
 
-// Explicit route to '/report/index'
+// Route to render all reports
 app.get('/report/all', (req, res) => {
     console.log('Render /report/all');
-    console.log(reports);
-    res.render("report/all", {
-        reports: reports
-    });
+    res.render('report/all', { reports });
 });
 
+// Route to render report creation page
 app.get('/report/create', (req, res) => {
     console.log('Render /report/create');
-    res.render("report/create", {
-
-    });
+    res.render('report/create');
 });
 
-app.get('/report/index', (req, res) => {
-    console.log('Render /report/index');
-    res.render("report/index", {
-    });
-});
-
+// Route to render specific report by ID
 app.get('/report/index/:id', (req, res) => {
-    let id = req.params.id;
-    console.log('Render /report/index/:', id);
-
-    let userData = reports[id].userData;
-    let report = reports[id].report;
-    let monthlyExpenses = reports[id].monthlyExpenses;
-    res.render("report/index", {
-        userdata: userData,
-        report: report,
-        monthlyExpenses: monthlyExpenses,
-    });
+    const { id } = req.params;
+    const reportData = reports[id];
+    if (reportData) {
+        const { userData, report, monthlyExpenses } = reportData;
+        res.render('report/index', { userdata: userData, report, monthlyExpenses });
+    } else {
+        res.status(404).send('Report not found');
+    }
 });
 
-
-
-// Handle form submissions with a POST request to '/report/create'
+// Handle form submissions and create new reports
 app.post('/report/create', express.urlencoded({ extended: true }), (req, res) => {
     console.log('POST: Form uploaded');
-    let report = processFinances(req.body);
-    let monthlyExpenses = { Insurance: req.body.Insurance, Financing: (req.body.Price - req.body.Downpayment) * req.body.Financing / 100, Other: req.body.Other }
-    let userData = { Price: req.body.Price, Downpayment: req.body.Downpayment, totalMonthlyExpenses: monthlyExpenses.Insurance + monthlyExpenses.Financing + monthlyExpenses.Other };
-    let savedReport = { id: id, report: report, userData: userData, monthlyExpenses: monthlyExpenses };
-    id += 0;
-    reports.push(savedReport);
-    res.render("report/index", {
-        userdata: userData,
-        report: report,
-        monthlyExpenses: monthlyExpenses,
-    });
+
+    const taxIncluded = req.body.taxIncluded === "on";
+    const price = Number(req.body.Price);
+    let taxes = Number(req.body.tax);
+
+    // Calculate taxes if not included in the price and adjust the total price accordingly
+    if (taxIncluded) {
+        taxes = price * (Number(req.body.taxRate) / 100);
+    }
+
+    const report = processFinances(req.body, taxes);
+    const monthlyExpenses = {
+        Insurance: Number(req.body.Insurance),
+        Financing: (price - Number(req.body.Downpayment)) * Number(req.body.Financing) / 100,
+        Other: Number(req.body.Other),
+    };
+    const userData = {
+        Price: price,
+        Taxes: taxes,
+        Downpayment: Number(req.body.Downpayment),
+        totalMonthlyExpenses: Math.round(monthlyExpenses.Insurance + monthlyExpenses.Financing + monthlyExpenses.Other).toFixed(2),
+    };
+
+    reports.push({ id: id++, report, userData, monthlyExpenses });
+    res.render('report/index', { userdata: userData, report, monthlyExpenses });
 });
 
-// Start the server and open the default browser to the specified URL
+// Start the server and automatically open the default browser
 app.listen(8080, () => {
     console.log('App listening on port 8080');
-    open(`http://localhost:8080`); // Automatically open the URL
+    open('http://localhost:8080');
 });
 
-
-function processFinances(entrydata) {
-    //Convert everything to ints because javascript is dumb
-    for (var field in entrydata) {
-        if (entrydata[field]) {
-            entrydata[field] = Number(entrydata[field]);
-
-        }
+// Function to process financial data
+function processFinances(entrydata, taxes) {
+    const entry = { ...entrydata };
+    for (let field in entry) {
+        entry[field] = Number(entry[field]) || 0;
     }
-    console.log("Entry data:", entrydata);
 
+    const totalExpenses = entry.Other + entry.Insurance + (entry.Financing / 100) * (entry.Price - entry.Downpayment) + taxes;
+    const monthlyExpenses = totalExpenses / entry.Wage;
+    const weeklyHours = monthlyExpenses / 4;
+    const dailyHours = weeklyHours / 7;
+    const remainingHours = (entry.Price - entry.Downpayment) / entry.Wage;
 
-    if (typeof entrydata !== "undefined") {
-        let totalexpenses = entrydata.Other + entrydata.Insurance + ((entrydata.Financing / 100) * entrydata.Price) + entrydata.Price + entrydata.Downpayment;
-        let monhtlyexpenses = totalexpenses - entrydata.Downpayment - entrydata.Price;
-        let monthlyhours = monhtlyexpenses / entrydata.Wage;
-        let weeklyhours = monthlyhours / 4;
-        let dailyhours = weeklyhours / 7
-        let remainingpayment = (entrydata.Price - entrydata.Downpayment) / entrydata.Wage;
-        //TODO Change this to a variable rendered client side, depending on if the user wants to include weekends or not
-        var report = { monthlyhours: monthlyhours, weeklyhours: weeklyhours, dailyhours: dailyhours, remaininghours: remainingpayment };
-        //Round everything to 2 decimal places
-        for (var field in report) {
-            if (report[field]) {
-                report[field] = (Math.round(report[field] * 100) / 100).toFixed(2);
-            }
-        }
-        return report;
-    }
-    return {};
+    const report = {
+        monthlyhours: monthlyExpenses.toFixed(2),
+        weeklyhours: weeklyHours.toFixed(2),
+        dailyhours: dailyHours.toFixed(2),
+        remaininghours: remainingHours.toFixed(2),
+    };
 
+    return report;
 }

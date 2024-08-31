@@ -151,3 +151,7 @@ th {
 .nav-link:hover {
     text-decoration: underline;
 }
+
+.taxes-group {
+    visibility: collapse;
+}

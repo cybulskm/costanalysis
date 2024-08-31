@@ -35,9 +35,16 @@
                             <td></td>
                         </tr>
                         <tr>
+                            <td>Taxes:</td>
+                            <td>
+                                <%= userdata.Taxes %>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
                             <td>Downpayment:</td>
                             <td>
-                                <%= userdata.Downpayment %>
+                                (<%= userdata.Downpayment %>)
                             </td>
                             <td></td>
                         </tr>
@@ -63,7 +70,7 @@
                                     <tr>
                                         <td>Remaining Payment:</td>
                                         <td class="border-top">
-                                            <%= userdata.Price - userdata.Downpayment %>
+                                            <%= userdata.Price + userdata.Taxes - userdata.Downpayment %>
                                         </td>
                                         <td></td>
                                     </tr>
